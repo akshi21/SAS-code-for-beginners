@@ -1,0 +1,72 @@
+data cars2;
+set sashelp.cars;
+where ranuni(12)<.2;
+run;
+
+
+
+PROC TABULATE DATA=cars2;
+CLASS Make Model ;
+var   Invoice;
+   TABLE Make*Model, Invoice*mean;
+   RUN;
+ 
+ 
+ PROC TABULATE DATA=cars2;
+CLASS Make Model ;
+var  MSRP Invoice;
+   TABLE make all, Invoice*(model all)*(mean);
+   RUN;
+ 
+ 
+ PROC TABULATE DATA=cars2;
+CLASS DriveTrain Origin ;
+var Invoice;
+   TABLE DriveTrain*Origin, Invoice*mean;
+   RUN;
+
+proc contents data=sashelp.shoes;
+run;
+ 
+ 
+ 
+ proc tabulate data=sashelp.shoes f=comma14.2;
+class product region;
+var sales inventory;
+table region all,
+      sales*(product all)*(n pctsum mean);
+table region all,
+      inventory*product*(min max);
+run;
+
+
+
+
+
+
+   data one;
+      input A Freq;
+      datalines;
+   1 2
+   2 2
+   . 2
+   ;
+   
+   
+    proc freq data=one;
+      tables A;
+      weight Freq;
+      title 'Default';
+   run;
+   
+   
+    proc freq data=one;
+      tables A / missprint;
+      weight Freq;
+      title 'MISSPRINT Option';
+   run;
+   proc freq data=one;
+      tables A / missing;
+      weight Freq;
+      title 'MISSING Option';
+   run;
